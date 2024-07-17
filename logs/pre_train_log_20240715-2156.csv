@@ -1,0 +1,4 @@
+,loss,learning_rate,epoch,step,train_runtime,train_samples_per_second,train_steps_per_second,total_flos,train_loss
+0,10.418,9.765625e-08,0.09,1,,,,,
+1,10.2414,4.8828125e-06,4.26,50,,,,,
+2,,,7.49,88,972.3481,24.683,0.091,4296360463073280.0,9.896102460947903
