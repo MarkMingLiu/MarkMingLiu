@@ -134,9 +134,7 @@ Apple是一家专注于设计和用户体验的公司，其产品在设计上注
 
 ### 3.2.1 克隆项目：
 ```bash
-git clone --depth 1 https://github.com/charent/ChatLM-mini-Chinese.git
-
-cd ChatLM-mini-Chinese
+git clone https://github.com/MarkMingLiu/small_transformer
 ```
 ### 3.2.2 安装依赖 
 
@@ -144,6 +142,7 @@ cd ChatLM-mini-Chinese
 
 pip安装：
 ```bash
+cd small_transformer
 pip install -r ./requirements.txt
 ``` 
 
