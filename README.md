@@ -1,13 +1,13 @@
 <div align="center">
 
-# 中文对话0.2B小模型 ChatLM-Chinese-0.2B  
+# 中文对话0.2B小模型 small_transformer  
 
 </div>
 
 # 一、介绍 
 现在的大语言模型的参数往往较大，消费级电脑单纯做推理都比较慢，更别说想自己从头开始训练一个模型了。本项目的目标是从0开始训练一个生成式语言模型，包括数据清洗、tokenizer训练、模型预训练、SFT指令微调、RLHF优化等。 
 
-ChatLM-mini-Chinese为中文对话小模型，模型参数只有0.2B（算共享权重约210M），可以在最低4GB显存的机器进行预训练（`batch_size=1`，`fp16`或者` bf16`），`float16`加载、推理最少只需要512MB显存。 
+small_transformer为中文对话小模型，模型参数只有0.2B（算共享权重约210M），可以在最低4GB显存的机器进行预训练（`batch_size=1`，`fp16`或者` bf16`），`float16`加载、推理最少只需要512MB显存。 
 
 
 - 公开所有预训练、SFT指令微调、DPO偏好优化数据集来源。
@@ -49,7 +49,7 @@ T5模型（Text-to-Text Transfer Transformer），详情见论文: [Exploring th
 
 模型源码来自huggingface，见：[T5ForConditionalGeneration](https://github.com/huggingface/transformers/blob/main/src/transformers/models/t5/modeling_t5.py#L1557)。
 
-模型配置见[model_config.json](https://huggingface.co/charent/ChatLM-mini-Chinese/blob/main/config.json)，官方的`T5-base`：`encoder layer`和`decoder layer `均为为12层，本项目这两个参数修改为10层。 
+模型配置见[model_config.json](https://huggingface.co/charent/small_transformer/blob/main/config.json)，官方的`T5-base`：`encoder layer`和`decoder layer `均为为12层，本项目这两个参数修改为10层。 
 
 模型参数：0.2B。词表大小：29298，仅包含中文和少量英文。
 
@@ -92,7 +92,7 @@ T5模型（Text-to-Text Transfer Transformer），详情见论文: [Exploring th
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 
-model_id = 'charent/ChatLM-mini-Chinese'
+model_id = 'charent/small_transformer'
 
 # 如果无法连接huggingface，打开以下两行代码的注释，将从modelscope下载模型文件，模型文件保存到'./model_save'目录
 # from modelscope import snapshot_download
@@ -163,15 +163,15 @@ conda install --yes --file ./requirements.txt
 
 ```bash 
 # 使用git命令下载huggingface模型，先安装[Git LFS]，否则下载的模型文件不可用
-git clone --depth 1 https://huggingface.co/charent/ChatLM-mini-Chinese
+git clone --depth 1 https://huggingface.co/charent/small_transformer
 
 # 如果无法连接huggingface，请从modelscope下载
-git clone --depth 1 https://www.modelscope.cn/charent/ChatLM-mini-Chinese.git
+git clone --depth 1 https://www.modelscope.cn/charent/small_transformer.git
 
-mv ChatLM-mini-Chinese model_save
+mv small_transformer model_save
 ```
 
-也可以直接从`Hugging Face Hub`仓库[ChatLM-Chinese-0.2B](https://huggingface.co/charent/ChatLM-mini-Chinese)手工下载，将下载的文件移动到`model_save`目录下即可。
+也可以直接从`Hugging Face Hub`仓库[ChatLM-Chinese-0.2B](https://huggingface.co/charent/small_transformer)手工下载，将下载的文件移动到`model_save`目录下即可。
 
 ## 3.3 Tokenizer训练  
 
@@ -315,9 +315,9 @@ python dpo_train.py
 ```
 
 ## 3.7 推理 
-确保`model_save`目录下有以下文件，这些文件都可以在`Hugging Face Hub`仓库[ChatLM-Chinese-0.2B](https://huggingface.co/charent/ChatLM-mini-Chinese)中找到：
+确保`model_save`目录下有以下文件，这些文件都可以在`Hugging Face Hub`仓库[ChatLM-Chinese-0.2B](https://huggingface.co/charent/small_transformer)中找到：
 ```bash
-ChatLM-mini-Chinese
+small_transformer
 ├─model_save
 |  ├─config.json
 |  ├─configuration_chat_model.py
