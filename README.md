@@ -3,7 +3,6 @@
 # 中文对话0.2B小模型 ChatLM-Chinese-0.2B  
 
 </div>
- 
 
 # 一、介绍 
 现在的大语言模型的参数往往较大，消费级电脑单纯做推理都比较慢，更别说想自己从头开始训练一个模型了。本项目的目标是从0开始训练一个生成式语言模型，包括数据清洗、tokenizer训练、模型预训练、SFT指令微调、RLHF优化等。 
@@ -28,59 +27,6 @@ ChatLM-mini-Chinese为中文对话小模型，模型参数只有0.2B（算共享
     - 支持使用`peft lora`进行偏好优化；
     - 支持模型合并，可将`Lora adapter`合并到原始模型中。
 - 支持下游任务微调：[finetune_examples](./finetune_examples/info_extract/)给出**三元组信息抽取任务**的微调示例，微调后的模型对话能力仍在。
-
-如果需要做基于小模型的检索增强生成（RAG），可以参考我的另一个项目[Phi2-mini-Chinese](https://github.com/charent/Phi2-mini-Chinese)，代码见[rag_with_langchain.ipynb](https://github.com/charent/Phi2-mini-Chinese/blob/main/rag_with_langchain.ipynb)
-
-🟢**最近更新**
-
-<details open> 
-<summary>  <b>2024-01-30</b> </summary>
-- 模型文件更新到魔搭modelscope，可以通过`snapshot_download`快速下载。<br/>
-</details>
-
-<details close> 
-<summary>  <b>2024-01-07</b> </summary>
-- 添加数据清洗过程中基于mini hash实现的文档去重（在本项目中其实是数据集的样本去重），防止模型遇到多次重复数据后，在推理时吐出训练数据。<br/>
-- 添加`DropDatasetDuplicate`类实现对大数据集的文档去重。<br/>
-</details>
-
-<details close> 
-<summary>  <b>2023-12-29</b> </summary>
-- 更新模型代码（权重不变），可以直接使用`AutoModelForSeq2SeqLM.from_pretrained(...)`加载模型使用。<br/>
-- 更新readme文档。<br/>
-</details>
-
-<details close> 
-<summary>  <b>2023-12-18</b> </summary>
-- 补充利用`ChatLM-mini-0.2B`模型微调下游三元组信息抽取任务代码及抽取效果展示 。<br/>
-- 更新readme文档。<br/>
-</details>
-
-<details close> 
-<summary>  <b>2023-12-14</b> </summary>
-- 更新SFT、DPO后的模型权重文件。 <br/>
-- 更新预训练、SFT及DPO脚本。 <br/>
-- 更新`tokenizer`为`PreTrainedTokenizerFast`。 <br/>
-- 重构`dataset`代码，支持动态最大长度，每个批次的最大长度由该批次的最长文本决定，节省显存。 <br/>
-- 补充`tokenizer`训练细节。 <br/>
-</details>
-
-<details close> 
-<summary> <b>2023-12-04</b> </summary>
-- 更新`generate`参数及模型效果展示。<br/>
-- 更新readme文档。<br/>
-</details>
-
-<details close> 
-<summary> <b>2023-11-28</b> </summary>
-- 更新dpo训练代码及模型权重。<br/>
-</details>
-
-<details close> 
-<summary> <b>2023-10-19</b> </summary>
-- 项目开源， 开放模型权重供下载。 <br/>
-</details>
-
 
 # 二、ChatLM-Chinese模型训练过程 
 
@@ -111,14 +57,8 @@ T5模型（Text-to-Text Transfer Transformer），详情见论文: [Exploring th
 硬件：
 ```bash
 # 预训练阶段：
-CPU: 28 vCPU Intel(R) Xeon(R) Gold 6330 CPU @ 2.00GHz
-内存：60 GB
-显卡：RTX A5000(24GB) * 2
-
-# sft及dpo阶段：
-CPU: Intel(R) i5-13600k @ 5.1GHz
-内存：32 GB
-显卡：NVIDIA GeForce RTX 4060 Ti 16GB * 1
+内存：24 GB
+显卡：RTX A6000(48GB) * 1
 ```
 1. **tokenizer 训练**： 现有`tokenizer`训练库遇到大语料时存在OOM问题，故全量语料按照类似`BPE`的方法根据词频合并、构造词库，运行耗时半天。
 
